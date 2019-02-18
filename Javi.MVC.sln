@@ -10,6 +10,9 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Javi.BusinessLogic", "Javi.BusinessLogic\Javi.BusinessLogic.csproj", "{1104F4DE-12E3-4595-A165-874D2E33AC41}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Javi.EntityFramework", "Javi.EntityFramework\Javi.EntityFramework.csproj", "{5427B6A1-E76B-4BE5-980F-CA2C63C9694C}"
+	ProjectSection(ProjectDependencies) = postProject
+		{1104F4DE-12E3-4595-A165-874D2E33AC41} = {1104F4DE-12E3-4595-A165-874D2E33AC41}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Javi.WepApi.Tests", "Javi.WepApi.Tests\Javi.WepApi.Tests.csproj", "{90D88A96-B364-46CC-BC1B-2E642246398F}"
 EndProject

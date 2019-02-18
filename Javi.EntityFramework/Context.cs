@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace Javi.BusinessLogic
 {
-    public class Context : IdentityDbContext<StoreUser>
+    public class Context : DbContext
     {
         public Context(DbContextOptions<Context> options) : base (options)
         {

@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Javi.BusinessLogic.Entities;
+using Microsoft.EntityFrameworkCore;
 
 namespace Javi.BusinessLogic
 {
@@ -43,41 +44,13 @@ namespace Javi.BusinessLogic
 
         }
 
-        public IEnumerable<Order> GetAllOrdersByUser(string user, bool includeItems)
-        {
-            try
-            {
-                this.logger.LogInformation("Getting the list of orders by user");
-                if (includeItems)
-                {
-                    return this.ctx.Orders
-                        .Where(o => o.User.UserName == user)
-                        .Include(o => o.Items)
-                        .ThenInclude(i => i.Product)
-                        .ToList();
-                }
-                else
-                {
-                    return this.ctx.Orders
-                        .Where(o => o.User.UserName == user)
-                        .ToList();
-                }
-            }
-            catch (Exception ex)
-            {
-                this.logger.LogError($"Failed Getting Orders by user from the db context {ex}");
-                throw ex;
-            }
-        }
-
-
-        public Order GetOrderById(string userName, int id)
+        public Order GetOrderById(int id)
         {
             try
             {
                 this.logger.LogInformation("Getting an order by Id");
                 return this.ctx.Orders
-                    .Where(o => o.Id == id && o.User.UserName == userName)
+                    .Where(o => o.Id == id)
                     .Include(o => o.Items)
                     .ThenInclude(i => i.Product)
                     .FirstOrDefault();

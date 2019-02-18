@@ -1,14 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using AutoMapper;
+using Javi.BusinessLogic;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
+using Newtonsoft.Json;
 
 namespace Javi.WebAPI
 {
@@ -24,7 +21,20 @@ namespace Javi.WebAPI
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+
+            services.AddMvc()
+                .AddJsonOptions(opt => opt.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore);
+            //Add database context
+            services.AddDbContext<Context>(cfg =>
+            {
+                cfg.UseSqlServer(Configuration.GetConnectionString("Default"));
+            });
+
+            //services.AddTransient<Seeder>();
+            services.AddScoped<IRepository, Repository>();
+
+            services.AddAutoMapper();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -35,7 +45,12 @@ namespace Javi.WebAPI
                 app.UseDeveloperExceptionPage();
             }
 
-            app.UseMvc();
+            app.UseMvc(cfg =>
+            {
+                cfg.MapRoute("Default",
+                    "/{controller}/{action}/{id?}",
+                    new { controller = "App", Action = "Index" });      //This is the default route /App/Index Will going to the AppController and execute the Index Action
+            });
         }
     }
 }
